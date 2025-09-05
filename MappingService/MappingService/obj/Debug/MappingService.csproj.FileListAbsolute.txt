@@ -1,0 +1,7 @@
+C:\Users\sps02\source\repos\MappingService\MappingService\bin\Debug\MappingService.exe.config
+C:\Users\sps02\source\repos\MappingService\MappingService\bin\Debug\MappingService.exe
+C:\Users\sps02\source\repos\MappingService\MappingService\bin\Debug\MappingService.pdb
+C:\Users\sps02\source\repos\MappingService\MappingService\obj\Debug\MappingService.csproj.AssemblyReference.cache
+C:\Users\sps02\source\repos\MappingService\MappingService\obj\Debug\MappingService.csproj.CoreCompileInputs.cache
+C:\Users\sps02\source\repos\MappingService\MappingService\obj\Debug\MappingService.exe
+C:\Users\sps02\source\repos\MappingService\MappingService\obj\Debug\MappingService.pdb
