@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration.Install;
-using System.Linq;
 using System.ServiceProcess;
-using System.Threading.Tasks;
 
 namespace MappingService
 {
@@ -14,18 +8,18 @@ namespace MappingService
     {
         private ServiceProcessInstaller _processInstaller;
         private ServiceInstaller _serviceInstaller;
+
         public ProjectInstaller()
         {
-            //InitializeComponent();
-
             _processInstaller = new ServiceProcessInstaller();
             _serviceInstaller = new ServiceInstaller();
 
             _processInstaller.Account = ServiceAccount.LocalSystem;
 
             _serviceInstaller.ServiceName = "MappingService";
+            _serviceInstaller.DisplayName = "Mapping Service - Integração Salesforce + SAP";
             _serviceInstaller.StartType = ServiceStartMode.Automatic;
-            _serviceInstaller.Description = "Serviço de monitoramento de pasta";
+            _serviceInstaller.Description = "Serviço que integra SAP HANA (ODBC) e Salesforce";
 
             Installers.Add(_processInstaller);
             Installers.Add(_serviceInstaller);
