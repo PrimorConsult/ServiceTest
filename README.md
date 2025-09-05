@@ -1,15 +1,17 @@
-📄 README.md — MappingService
-🚀 Sobre o Projeto
+# 📄 MappingService
 
-O MappingService é um serviço Windows desenvolvido em C# (.NET Framework 4.8) que realiza integração entre SAP HANA (via ODBC) e Salesforce (via API REST).
+## 🚀 Sobre o Projeto
+O **MappingService** é um serviço Windows desenvolvido em C# (.NET Framework 4.8) que realiza integração entre **SAP HANA** (via ODBC) e **Salesforce** (via API REST).  
 
-Recupera dados do SAP através de queries ODBC.
+- Recupera dados do SAP através de queries ODBC.  
+- Envia registros formatados para objetos customizados do Salesforce.  
+- Mantém logs detalhados em arquivo e no Event Viewer do Windows.  
 
-Envia registros formatados para objetos customizados do Salesforce.
+---
 
-Mantém logs detalhados em arquivo e no Event Viewer do Windows.
+## ⚙️ Estrutura do Projeto
 
-⚙️ Estrutura do Projeto
+```text
 MappingService
 │
 ├─ Config
@@ -31,73 +33,72 @@ MappingService
 │
 ├─ Program.cs                # Entry point do serviço (ServiceBase.Run)
 └─ ProjectInstaller.cs       # Define instalação do serviço no Windows (nome, descrição, conta de execução)
+```
 
-🛠️ Pré-requisitos
+---
 
-Visual Studio 2019/2022
+## 🛠️ Pré-requisitos
 
-.NET Framework 4.8
+- Visual Studio 2019/2022  
+- .NET Framework 4.8  
+- Driver ODBC do SAP HANA (HDBODBC) instalado  
+- Acesso ao banco de dados SAP (usuário e senha válidos)  
+- Credenciais Salesforce (ClientId e ClientSecret do Connected App)  
 
-Driver ODBC do SAP HANA (HDBODBC) instalado
+---
 
-Acesso ao banco de dados SAP (usuário e senha válidos)
+## 🔧 Instalação do Serviço
 
-Credenciais Salesforce (ClientId e ClientSecret do Connected App)
+Compile o projeto em **Release** e vá até a pasta `bin\Release` (ou `bin\x64\Release` se estiver usando 64 bits).  
 
-🔧 Instalação do Serviço
-
-Compile o projeto em Release e vá até a pasta bin\Release (ou bin\x64\Release se estiver usando 64 bits).
-
-▶️ Instalar o serviço
-
-Any CPU / x86
-
+### ▶️ Instalar o serviço
+**Any CPU / x86**
+```powershell
 & "C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe" MappingService.exe
+```
 
-
-x64
-
+**x64**
+```powershell
 & "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe" MappingService.exe
+```
 
-🗑️ Desinstalar o serviço
+### 🗑️ Desinstalar o serviço
+```powershell
 & "C:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe" /u MappingService.exe
+```
 
-📌 Funcionamento do Serviço
+---
 
-Start (OnStart)
+## 📌 Funcionamento do Serviço
 
-Obtém o token de acesso do Salesforce (OAuth2).
+1. **Start (`OnStart`)**
+   - Obtém o token de acesso do Salesforce (OAuth2).  
+   - Conecta ao SAP HANA via ODBC e executa `SELECT TOP 1 * FROM OINV`.  
+   - Loga o resultado da query (sucesso ou falha).  
+   - Envia um `POST` de teste para o objeto `CA_CondicaoPagamento__c` no Salesforce.  
+   - Registra tudo em log (`C:\Logs\MappingService\LogService.txt`) e no **Event Viewer**.  
 
-Conecta ao SAP HANA via ODBC e executa SELECT TOP 1 * FROM OINV.
+2. **Stop (`OnStop`)**
+   - Escreve no log que o serviço foi interrompido.  
 
-Loga o resultado da query (sucesso ou falha).
+---
 
-Envia um POST de teste para o objeto CA_CondicaoPagamento__c no Salesforce.
+## 📝 Logs
 
-Registra tudo em log (C:\Logs\MappingService\LogService.txt) e no Event Viewer.
+- Local: `C:\Logs\MappingService\LogService.txt`  
+- Event Viewer: **Application → Source: MappingService**  
 
-Stop (OnStop)
-
-Escreve no log que o serviço foi interrompido.
-
-📝 Logs
-
-Local: C:\Logs\MappingService\LogService.txt
-
-Event Viewer: Application → Source: MappingService
-
-Cada entrada contém:
-
+Cada entrada contém:  
+```text
 [Data Hora] - [Máquina] - [Mensagem]
+```
 
-🔮 Próximos Passos (Roadmap)
+---
 
- Implementar execução periódica (Timer para rodar a cada X minutos).
+## 🔮 Próximos Passos (Roadmap)
 
- Parametrizar queries do SAP (não fixar apenas OINV).
-
- Evoluir configuração (usar JSON/variáveis de ambiente em vez de headers hardcoded).
-
- Adicionar tratamento de retry com backoff para chamadas Salesforce.
-
- Possível integração futura com Azure Key Vault para gestão de segredos.
+- [ ] Implementar execução periódica (Timer para rodar a cada X minutos).  
+- [ ] Parametrizar queries do SAP (não fixar apenas OINV).  
+- [ ] Evoluir configuração (usar JSON/variáveis de ambiente em vez de headers hardcoded).  
+- [ ] Adicionar tratamento de retry com backoff para chamadas Salesforce.  
+- [ ] Possível integração futura com **Azure Key Vault** para gestão de segredos.  
