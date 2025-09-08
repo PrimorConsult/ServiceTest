@@ -3,7 +3,7 @@
 ## 🚀 Sobre o Projeto
 O **MappingService** é um serviço Windows desenvolvido em C# (.NET Framework 4.8) que realiza integração entre **SAP HANA** (via ODBC) e **Salesforce** (via API REST).  
 
-- Recupera dados do SAP através de queries ODBC.  
+- Recupera dados do SAP através do drive ODBC.  
 - Envia registros formatados para objetos customizados do Salesforce.  
 - Mantém logs detalhados em arquivo e no Event Viewer do Windows.  
 
@@ -73,8 +73,8 @@ Compile o projeto em **Release** e vá até a pasta `bin\Release` (ou `bin\x64\R
 
 1. **Start (`OnStart`)**
    - Obtém o token de acesso do Salesforce (OAuth2).  
-   - Conecta ao SAP HANA via ODBC e executa `SELECT TOP 1 * FROM OINV`.  
-   - Loga o resultado da query (sucesso ou falha).  
+   - Conecta ao SAP HANA via ODBC.  
+   - Loga o resultado da query (sucesso ou falha). 
    - Envia um `POST` de teste para o objeto `CA_CondicaoPagamento__c` no Salesforce.  
    - Registra tudo em log (`C:\Logs\MappingService\LogService.txt`) e no **Event Viewer**.  
 
@@ -92,13 +92,3 @@ Cada entrada contém:
 ```text
 [Data Hora] - [Máquina] - [Mensagem]
 ```
-
----
-
-## 🔮 Próximos Passos (Roadmap)
-
-- [ ] Implementar execução periódica (Timer para rodar a cada X minutos).  
-- [ ] Parametrizar queries do SAP (não fixar apenas OINV).  
-- [ ] Evoluir configuração (usar JSON/variáveis de ambiente em vez de headers hardcoded).  
-- [ ] Adicionar tratamento de retry com backoff para chamadas Salesforce.  
-- [ ] Possível integração futura com **Azure Key Vault** para gestão de segredos.  
